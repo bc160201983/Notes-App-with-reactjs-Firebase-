@@ -3,7 +3,8 @@ import React from "react";
 import { useGlobalContext } from "../context";
 
 const NotesBody = () => {
-  const { notes, getSingleNote } = useGlobalContext();
+  const { notes, getSingleNote, loading } = useGlobalContext();
+
   return (
     <div className="mx-5 mt-7">
       {notes.map((note) => {

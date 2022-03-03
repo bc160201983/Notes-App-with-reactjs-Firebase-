@@ -6,15 +6,14 @@ const NotesTextArea = () => {
 
   return (
     <div>
-      <div className="text-area">
+      <div className="text-area h-[calc(100vh-125px)]">
         <textarea
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          className="w-full h-[100vh] outline-none text-[#666666] p-5 bg-[#171717]"
+          className="w-full h-full outline-none text-[#666666] p-5 bg-[#171717]"
           name=""
         ></textarea>
       </div>
-      area
     </div>
   );
 };
