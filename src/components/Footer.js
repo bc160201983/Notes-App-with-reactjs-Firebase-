@@ -13,10 +13,10 @@ const Footer = () => {
         }}
         className="wrapper bg-[#171717] flex flex-col justify-center items-center cursor-pointer"
       >
-        <div className="icon text-[50px]">
+        <div className="icon text-white text-[50px]">
           <AiOutlineFileAdd />
         </div>
-        <div className="name">New Notes</div>
+        <div className="name text-white">New Notes</div>
       </div>
     </div>
   );

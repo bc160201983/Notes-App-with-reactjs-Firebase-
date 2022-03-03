@@ -1,15 +1,40 @@
 import React from "react";
 
 import { useGlobalContext } from "../context";
+import { motion } from "framer-motion";
+const container = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.5,
+      staggerChildren: 0.9,
+    },
+  },
+};
+const item = {
+  hidden: { y: 100, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+  },
+};
 
 const NotesBody = () => {
   const { notes, getSingleNote, loading } = useGlobalContext();
 
   return (
-    <div className="mx-5 mt-7">
+    <motion.div
+      variants={container}
+      initial="hidden"
+      animate="visible"
+      className="mx-5 mt-7"
+    >
       {notes.map((note) => {
         return (
-          <div
+          <motion.div
+            variants={item}
             key={note.id}
             className="note-list flex flex-col justify-between h-[80px] bg-[#1F1F1F] rounded-xl pl-8  mt-3 cursor-pointer"
             onClick={() => getSingleNote(note.id)}
@@ -22,10 +47,10 @@ const NotesBody = () => {
                 "en-US"
               )}
             </div>
-          </div>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 };
 

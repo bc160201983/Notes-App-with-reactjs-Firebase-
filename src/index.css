@@ -19,6 +19,34 @@
 
 @layer utilities {
   @variants responsive {
+    .left-modal {
+      -webkit-animation-name: slideIn;
+      -webkit-animation-duration: 0.4s;
+      animation-name: slideIn;
+      animation-duration: 0.4s;
+    }
+    @-webkit-keyframes slideIn {
+      from {
+        right: -360px;
+        opacity: 0;
+      }
+      to {
+        right: 0;
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        right: -360px;
+        opacity: 0;
+      }
+      to {
+        right: 0;
+        opacity: 1;
+      }
+    }
+
     ::placeholder {
       /* Chrome, Firefox, Opera, Safari 10.1+ */
       color: red;

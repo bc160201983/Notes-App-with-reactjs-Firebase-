@@ -26,6 +26,7 @@ const AppProvider = ({ children }) => {
   const [alert, setAlert] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState("");
+  const [visible, setVisible] = useState(false);
 
   const CalculateWords = () => {
     let slitedData = body.length;
@@ -92,12 +93,16 @@ const AppProvider = ({ children }) => {
       }
     }
   };
+
   useEffect(() => {
     getNotes();
   }, []);
   return (
     <AppContext.Provider
       value={{
+        editId,
+        visible,
+        setVisible,
         handleEdit,
         isEditing,
         setIsEditing,
