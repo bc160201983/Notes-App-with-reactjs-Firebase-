@@ -10,6 +10,8 @@ import {
   orderBy,
   query,
   updateDoc,
+  onSnapshot,
+  Timestamp,
 } from "firebase/firestore";
 // make sure to use https
 
@@ -27,6 +29,7 @@ const AppProvider = ({ children }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState("");
   const [visible, setVisible] = useState(false);
+  const [selectedIds, setSelectedIds] = useState([]);
 
   const CalculateWords = () => {
     let slitedData = body.length;
@@ -36,17 +39,16 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     CalculateWords();
   }, [body]);
-  const getNotes = async () => {
-    const q = query(notesRef, orderBy("CreatedAt", "desc"));
-    try {
-      setLoading(true);
-      const data = await getDocs(q);
-      setNotes(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const getNotes = async () => {
+  //   const q = query(notesRef, orderBy("CreatedAt", "desc"));
+  //   try {
+  //     const data = await getDocs(q);
+  //     setNotes(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   const getSingleNote = async (id) => {
     setIsEditing(true);
     const singleNote = notes.filter((n) => n.id === id);
@@ -59,7 +61,7 @@ const AppProvider = ({ children }) => {
       console.log("fill the required feilds");
     } else {
       const note = doc(db, "notes", editId);
-      console.log(note);
+
       try {
         await updateDoc(note, {
           title: title,
@@ -77,14 +79,13 @@ const AppProvider = ({ children }) => {
       console.log("please fill add Todo before update");
     } else {
       try {
-        setLoading(true);
         const docRef = await addDoc(notesRef, {
           title,
           body,
-          CreatedAt: serverTimestamp(),
-          UpdatedAt: serverTimestamp(),
+          CreatedAt: Timestamp.fromDate(new Date()),
+          UpdatedAt: Timestamp.fromDate(new Date()),
         });
-        setLoading(false);
+
         setTitle("");
         setBody("");
         console.log("Document written with ID: ", docRef.id);
@@ -95,11 +96,29 @@ const AppProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    getNotes();
+    const q = query(notesRef, orderBy("CreatedAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const newNotes = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setLoading(false);
+      setNotes(newNotes);
+    });
+    return () => unsubscribe();
   }, []);
+
+  const handleCheckBox = (id) => {
+    setSelectedIds([...selectedIds, id]);
+  };
+  console.log(selectedIds);
   return (
     <AppContext.Provider
       value={{
+        selectedIds,
+        setSelectedIds,
+        handleCheckBox,
+        loading,
         editId,
         visible,
         setVisible,

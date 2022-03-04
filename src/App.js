@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import WriteNotes from "./components/WriteNotes";
 import { useGlobalContext } from "./context";
 function App() {
+  const { loading } = useGlobalContext();
   const cont = {
     hidden: { x: 0, opacity: 1, scale: 0 },
     visible: {
@@ -32,7 +33,13 @@ function App() {
           <NavBar />
           <HeaderNav />
         </div>
-        <div className="h-[100vh] bg-[#171717] text-white relative overflow-y-auto">
+        <div className="h-[calc(100vh-74px)] bg-[#171717] text-white relative overflow-y-auto">
+          {loading && (
+            <img
+              className="absolute left-[43%] top-[-15px] w-[70px]"
+              src={loader2}
+            />
+          )}
           <NotesBody />
         </div>
         <Footer />

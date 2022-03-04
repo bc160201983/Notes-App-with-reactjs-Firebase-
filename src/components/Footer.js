@@ -3,13 +3,14 @@ import { AiOutlineFileAdd } from "react-icons/ai";
 import { useGlobalContext } from "../context";
 
 const Footer = () => {
-  const { setTitle, setBody } = useGlobalContext();
+  const { setTitle, setBody, setIsEditing } = useGlobalContext();
   return (
     <div className="sticky bottom-0 left-[43%]">
       <div
         onClick={() => {
           setTitle("");
           setBody("");
+          setIsEditing(false);
         }}
         className="wrapper bg-[#171717] flex flex-col justify-center items-center cursor-pointer"
       >
