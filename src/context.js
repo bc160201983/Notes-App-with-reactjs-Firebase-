@@ -12,7 +12,10 @@ import {
   updateDoc,
   onSnapshot,
   Timestamp,
+  WriteBatch,
+  deleteDoc,
 } from "firebase/firestore";
+import id from "date-fns/esm/locale/id/index.js";
 // make sure to use https
 
 const AppContext = React.createContext();
@@ -30,6 +33,8 @@ const AppProvider = ({ children }) => {
   const [editId, setEditId] = useState("");
   const [visible, setVisible] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [newNote, setNewNote] = useState(false);
+  const [deleteDilog, setDeleteDilog] = useState(false);
 
   const CalculateWords = () => {
     let slitedData = body.length;
@@ -68,6 +73,7 @@ const AppProvider = ({ children }) => {
           body: body,
           UpdatedAt: serverTimestamp(),
         });
+        setLoading(false);
         console.log("note updated");
       } catch (error) {
         console.log(error);
@@ -78,6 +84,7 @@ const AppProvider = ({ children }) => {
     if (title === "" || body === "") {
       console.log("please fill add Todo before update");
     } else {
+      setLoading(true);
       try {
         const docRef = await addDoc(notesRef, {
           title,
@@ -85,7 +92,8 @@ const AppProvider = ({ children }) => {
           CreatedAt: Timestamp.fromDate(new Date()),
           UpdatedAt: Timestamp.fromDate(new Date()),
         });
-
+        setLoading(false);
+        setNewNote(false);
         setTitle("");
         setBody("");
         console.log("Document written with ID: ", docRef.id);
@@ -111,10 +119,52 @@ const AppProvider = ({ children }) => {
   const handleCheckBox = (id) => {
     setSelectedIds([...selectedIds, id]);
   };
-  console.log(selectedIds);
+  const handleDelete = () => {
+    setDeleteDilog(true);
+    // const ids = selectedIds;
+    // ids.forEach(async (id) => {
+    //   const delRef = doc(db, "notes", id);
+    //   try {
+    //     const ref = await deleteDoc(delRef);
+    //     console.log("Items Has Been Deleted", ref);
+    //     setSelectedIds(0);
+    //     setVisible(false);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // delRef
+    //   .delete()
+    //   .then(() => {
+    //     console.log("deleted a laptop");
+    //   })
+    //   .catch((err) => console.log("There is some error in updating!"));
+    //});
+  };
+  const deleteNote = () => {
+    const ids = selectedIds;
+    ids.forEach(async (id) => {
+      const delRef = doc(db, "notes", id);
+      try {
+        await deleteDoc(delRef);
+        setLoading(false);
+        setSelectedIds(0);
+        setVisible(false);
+
+        setDeleteDilog(false);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  };
   return (
     <AppContext.Provider
       value={{
+        deleteNote,
+        deleteDilog,
+        setDeleteDilog,
+        newNote,
+        setNewNote,
+        handleDelete,
         selectedIds,
         setSelectedIds,
         handleCheckBox,

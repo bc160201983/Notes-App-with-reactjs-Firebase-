@@ -2,6 +2,7 @@ import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsThreeDots } from "react-icons/bs";
 import { useGlobalContext } from "../context";
+import { motion, AnimatePresence } from "framer-motion";
 
 const NavBar = () => {
   const { visible, setVisible, selectedIds, setSelectedIds } =
@@ -14,8 +15,11 @@ const NavBar = () => {
   return (
     <>
       {visible ? (
-        <nav className="flex justify-between h-[38px] px-5 bg-[#171717]">
-          <div className="font-bold text-[18px]">Select All</div>
+        <nav
+          key="topNav"
+          className="flex justify-between h-[38px] px-5 bg-[#171717]"
+        >
+          <div className="text-[18px]">Select All</div>
 
           <div
             className="text-[18px] cursor-pointer"

@@ -17,15 +17,8 @@ const WriteNotes = () => {
   return (
     <div>
       <NotesNav />
-      <motion.div
-        key={editId}
-        initial={{ x: 300, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.4 }}
-      >
-        <Title />
-        <NotesTextArea />
-      </motion.div>
+      <Title />
+      <NotesTextArea />
     </div>
   );
 };

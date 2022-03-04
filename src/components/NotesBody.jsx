@@ -31,7 +31,7 @@ const NotesBody = () => {
         variants={container}
         initial="hidden"
         animate="visible"
-        className="mx-5 mt-7"
+        className="mx-5 mt-1"
       >
         {notes.map((note) => {
           return (
@@ -40,7 +40,7 @@ const NotesBody = () => {
                 {visible && (
                   <AnimatePresence>
                     <motion.label
-                      key={visible}
+                      key={note.id}
                       initial={{ x: 20, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.2, duration: 0.4 }}
