@@ -22,9 +22,6 @@ const NotesNav = () => {
         </div>
         <div className="font-bold text-[25px] md:block hidden">Notes</div>
         <div className=" flex justify-center items-center space-x-3">
-          <div className="text-[30px]">
-            <AiOutlineSearch />
-          </div>
           {isEditing ? (
             <div onClick={handleEdit} className="text-[30px] cursor-pointer">
               <MdOutlineUpdate className="text-white" />

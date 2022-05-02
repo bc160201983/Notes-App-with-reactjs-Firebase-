@@ -16,6 +16,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import id from "date-fns/esm/locale/id/index.js";
+import { set } from "date-fns";
 // make sure to use https
 
 const AppContext = React.createContext();
@@ -117,8 +118,20 @@ const AppProvider = ({ children }) => {
   }, []);
 
   const handleCheckBox = (id) => {
-    setSelectedIds([...selectedIds, id]);
+    if (id) {
+      setSelectedIds([...selectedIds, id]);
+    }
+    selectedIds.map((item) => {
+      if (item === id) {
+        setSelectedIds(selectedIds.filter((item) => item !== id));
+      }
+    });
   };
+
+  // const checkDuplicates = (ids) => {
+  //   const uniqueIds = [...new Set(ids)];
+  //   return uniqueIds;
+  // };
   const handleDelete = () => {
     setDeleteDilog(true);
     // const ids = selectedIds;

@@ -41,10 +41,10 @@ const NavBar = () => {
             >
               Edit
             </div>
-            <div className="text-[20px]">
+            <div className="text-[30px]">
               <AiOutlineSearch />
             </div>
-            <div className="text-[20px]">
+            <div className="text-[30px]">
               <BsThreeDots />
             </div>
           </div>
