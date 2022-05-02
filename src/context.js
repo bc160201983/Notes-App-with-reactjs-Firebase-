@@ -18,6 +18,8 @@ import {
 import id from "date-fns/esm/locale/id/index.js";
 import { set } from "date-fns";
 // make sure to use https
+import { ToastContainer, toast } from "react-toastify";
+import { tr } from "date-fns/locale";
 
 const AppContext = React.createContext();
 
@@ -36,6 +38,7 @@ const AppProvider = ({ children }) => {
   const [selectedIds, setSelectedIds] = useState([]);
   const [newNote, setNewNote] = useState(false);
   const [deleteDilog, setDeleteDilog] = useState(false);
+  const [error, setError] = useState(false);
 
   const CalculateWords = () => {
     let slitedData = body.length;
@@ -64,7 +67,15 @@ const AppProvider = ({ children }) => {
   };
   const handleEdit = async () => {
     if (title === "" || body === "") {
-      console.log("fill the required feilds");
+      toast.error("fill the required feilds!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       const note = doc(db, "notes", editId);
 
@@ -75,7 +86,16 @@ const AppProvider = ({ children }) => {
           UpdatedAt: serverTimestamp(),
         });
         setLoading(false);
-        console.log("note updated");
+
+        toast.success("Note Updated", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -83,7 +103,15 @@ const AppProvider = ({ children }) => {
   };
   const createNote = async () => {
     if (title === "" || body === "") {
-      console.log("please fill add Todo before update");
+      toast.error("fill the required feilds!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       setLoading(true);
       try {
@@ -93,11 +121,20 @@ const AppProvider = ({ children }) => {
           CreatedAt: Timestamp.fromDate(new Date()),
           UpdatedAt: Timestamp.fromDate(new Date()),
         });
+
         setLoading(false);
         setNewNote(false);
         setTitle("");
         setBody("");
-        console.log("Document written with ID: ", docRef.id);
+        toast.success("New Note Added", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       } catch (error) {
         console.log(error);
       }
@@ -155,10 +192,20 @@ const AppProvider = ({ children }) => {
   };
   const deleteNote = () => {
     const ids = selectedIds;
+    toast.success(`${selectedIds.length} Note Deleted`, {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     ids.forEach(async (id) => {
       const delRef = doc(db, "notes", id);
       try {
         await deleteDoc(delRef);
+
         setLoading(false);
         setSelectedIds(0);
         setVisible(false);
@@ -197,6 +244,8 @@ const AppProvider = ({ children }) => {
         setTitle,
         notes,
         getSingleNote,
+        setError,
+        error,
       }}
     >
       {children}
